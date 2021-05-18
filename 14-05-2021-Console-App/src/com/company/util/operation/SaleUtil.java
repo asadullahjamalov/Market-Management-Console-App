@@ -40,23 +40,11 @@ public class SaleUtil {
     }
 
     public static void showAllSalesBasedOnAmountInterval() {
-        System.out.println("Enter minimum sale amount (in AZN)");
-        Scanner scanner1 = new Scanner(System.in);
-        double saleAmountMin = scanner1.nextDouble();
-        while (saleAmountMin <= 0) {
-            System.out.println("Sale amount can not be negative or zero");
-            System.out.println("Enter minimum sale amount (in AZN)");
-            saleAmountMin = scanner1.nextDouble();
-        }
 
-        System.out.println("Enter maximum sale amount (in AZN)");
-        Scanner scanner2 = new Scanner(System.in);
-        double saleAmountMax = scanner2.nextDouble();
-        while (saleAmountMax <= 0) {
-            System.out.println("Sale amount can not be negative or zero");
-            System.out.println("Enter maximum sale amount (in AZN)");
-            saleAmountMax = scanner2.nextDouble();
-        }
+        double saleAmountMin = getDouble("Minimum sale amount");
+        double saleAmountMax = getDouble("Maximum sale amount");
+
+
 
         BigDecimal saleAmountMaxBigDecimal = BigDecimal.valueOf(saleAmountMax);
         BigDecimal saleAmountMinBigDecimal = BigDecimal.valueOf(saleAmountMin);
@@ -86,9 +74,7 @@ public class SaleUtil {
         for (Sale sale : Market.saleList) {
             System.out.println("Sale Number " + sale.getSaleNumber());
         }
-        System.out.println("Enter the Sale Number ");
-        Scanner scanner = new Scanner(System.in);
-        long saleNumber = scanner.nextLong();
+        long saleNumber = getLong("Number (code) of Sale");
         int count = 0;
         for (Sale sale : Market.saleList) {
             count++;
@@ -146,9 +132,7 @@ public class SaleUtil {
 
     public static void removeSale() {
         showAllSales();
-        System.out.println("Enter the number (code) of sale to remove: ");
-        Scanner scanner = new Scanner(System.in);
-        long saleNumber = scanner.nextLong();
+        long saleNumber = getLong("Number (code) of Sale");
         int count = 0;
         long removedSaleNumber = 0;
         Sale removedSale = new Sale();
@@ -173,9 +157,7 @@ public class SaleUtil {
 
     public static void returnProductFromSale() {
         showAllSales();
-        System.out.println("Enter the number (code) of sale to return: ");
-        Scanner scanner = new Scanner(System.in);
-        long saleNumber = scanner.nextLong();
+        long saleNumber = getLong("Number (code) of Sale");
         int count = 0;
         long removedSaleNumber = 0;
         Sale removedSale = new Sale();
@@ -187,9 +169,7 @@ public class SaleUtil {
                 removedSale = sale;
                 System.out.println("***************************");
                 printSaleDetails(removedSale);
-                System.out.println("Enter the number (code) of product to return:");
-                Scanner scanner2 = new Scanner(System.in);
-                long returnedProductNumber = scanner2.nextLong();
+                long returnedProductNumber = getLong("Number (code) of product");
                 int count1 = 0;
                 for (Product product : sale.getSaleProductList()) {
                     count1++;
@@ -219,12 +199,8 @@ public class SaleUtil {
     public static Sale addSaleDetails(Market market) {
         System.out.println("There are following products in the stock of Market");
         ProductUtil.showAllProducts();
-        System.out.println("Enter the number (code) of product to buy: ");
-        Scanner scanner = new Scanner(System.in);
-        long productNumber = scanner.nextLong();
-        System.out.println("Enter the quantity of product to buy: ");
-        Scanner scanner2 = new Scanner(System.in);
-        int saleQuantity = scanner.nextInt();
+        long productNumber = getLong("Number (code) of product");
+        int saleQuantity = getInteger("Quantity of product");
         int count = 0;
         for (Product product : Market.productList) {
             count++;
@@ -266,17 +242,9 @@ public class SaleUtil {
     public static LocalDate addDateDetails() {
         while (true) {
             System.out.println("---------------------");
-            System.out.println("Enter the Sale Year ");
-            Scanner scanner1 = new Scanner(System.in);
-            int saleYear = scanner1.nextInt();
-
-            System.out.println("Enter the Sale Month ");
-            Scanner scanner2 = new Scanner(System.in);
-            int saleMonth = scanner2.nextInt();
-
-            System.out.println("Enter the Sale Day ");
-            Scanner scanner3 = new Scanner(System.in);
-            int saleDay = scanner3.nextInt();
+            int saleYear = getInteger("Sale Year");
+            int saleMonth = getInteger("Sale Month");
+            int saleDay = getInteger("Sale Day");
 
             if (saleYear <= LocalDate.now().getYear() && saleMonth <= 12
                     && saleMonth >= 1 && saleDay >= 1 && saleDay <= 31 &&
@@ -321,6 +289,46 @@ public class SaleUtil {
                 return (int) (p1.getProductNumber() - p2.getProductNumber());
             }
         });
+    }
+
+
+    public static double getDouble(String info) {
+        System.out.println("[Hint - " + info + " should be entered by numbers]");
+        System.out.println("Enter " + info + ":");
+        while (true) {
+            String str = new Scanner(System.in).next();
+            if (str.matches("([0-9]+[.]?[0-9]*)")) {
+                return Double.parseDouble(str);
+            } else {
+                System.out.println("Please enter corresponding " + info);
+            }
+        }
+    }
+
+    public static int getInteger(String info) {
+        System.out.println("[Hint - " + info + " should be entered by numbers]");
+        System.out.println("Enter " + info + ":");
+        while (true) {
+            String str = new Scanner(System.in).next();
+            if (str.matches("([0-9]+)")) {
+                return Integer.parseInt(str);
+            } else {
+                System.out.println("Please enter corresponding " + info);
+            }
+        }
+    }
+
+    public static long getLong(String info) {
+        System.out.println("[Hint - " + info + " should be entered by numbers]");
+        System.out.println("Enter " + info + ":");
+        while (true) {
+            String str = new Scanner(System.in).next();
+            if (str.matches("([0-9]+)")) {
+                return Long.parseLong(str);
+            } else {
+                System.out.println("Please enter corresponding " + info);
+            }
+        }
     }
 
 

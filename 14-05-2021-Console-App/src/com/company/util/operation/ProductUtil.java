@@ -17,9 +17,7 @@ public class ProductUtil {
 
     public static void editProduct() {
         showAllProducts();
-        System.out.println("Enter the number (code) of product to edit: ");
-        Scanner scanner = new Scanner(System.in);
-        long productNumber = scanner.nextLong();
+        long productNumber = getLong("Number (code) of product");
         int count = 0;
         for (Product product : Market.productList) {
             count++;
@@ -41,9 +39,7 @@ public class ProductUtil {
 
     public static void removeProduct() {
         showAllProducts();
-        System.out.println("Enter the number (code) of product to remove: ");
-        Scanner scanner = new Scanner(System.in);
-        long productNumber = scanner.nextLong();
+        long productNumber = getLong("Number (code) of product");
         int count = 0;
         for (Product product : Market.productList) {
             count++;
@@ -80,23 +76,8 @@ public class ProductUtil {
     }
 
     public static void showAllProductsBasedOnPriceInterval() {
-        System.out.println("Enter minimum product price");
-        Scanner scanner2 = new Scanner(System.in);
-        double productPriceMin = scanner2.nextDouble();
-        while (productPriceMin <= 0) {
-            System.out.println("Product price can not be negative or zero");
-            System.out.println("Enter minimum product price: ");
-            productPriceMin = scanner2.nextDouble();
-        }
-
-        System.out.println("Enter maximum product price");
-        Scanner scanner1 = new Scanner(System.in);
-        double productPriceMax = scanner1.nextDouble();
-        while (productPriceMax <= 0) {
-            System.out.println("Product price can not be negative or zero");
-            System.out.println("Enter maximum product price: ");
-            productPriceMax = scanner1.nextDouble();
-        }
+        double productPriceMin = getDouble("Minimum Price");
+        double productPriceMax = getDouble("Maximum Price");
         if (productPriceMax >= productPriceMin) {
             int count = 0;
             for (Product product : Market.productList) {
@@ -136,22 +117,14 @@ public class ProductUtil {
 
     public static void changeProductPrice() {
         showAllProducts();
-        System.out.println("Enter the number (code) of product to change price: ");
-        Scanner scanner = new Scanner(System.in);
-        long productNumber = scanner.nextLong();
+        long productNumber = getLong("Number (code) of product");
+
         int count = 0;
         for (Product product : Market.productList) {
             count++;
             if (product.getProductNumber() == productNumber) {
                 count--;
-                System.out.println("Enter new price of product");
-                Scanner scanner2 = new Scanner(System.in);
-                double productPrice = scanner2.nextDouble();
-                while (productPrice <= 0) {
-                    System.out.println("Product prize can not be negative or zero");
-                    System.out.println("Enter new price of product: ");
-                    productPrice = scanner2.nextDouble();
-                }
+                double productPrice = getDouble("Price");
                 Product editedProduct = new Product(product.getProductName(), productPrice,
                         product.getProductCategory(), product.getProductQuantity());
                 long olderProductNumber = product.getProductNumber();
@@ -227,25 +200,12 @@ public class ProductUtil {
         Scanner scanner1 = new Scanner(System.in);
         String productName = scanner1.nextLine();
 
-        System.out.println("Enter product price");
-        Scanner scanner2 = new Scanner(System.in);
-        double productPrice = scanner2.nextDouble();
-        while (productPrice <= 0) {
-            System.out.println("Product prize can not be negative or zero");
-            System.out.println("Enter product price: ");
-            productPrice = scanner2.nextDouble();
-        }
+        double productPrice = getDouble("Price");
 
         Category productCategory = categorySelector();
 
-        System.out.println("Enter product quantity");
-        Scanner scanner4 = new Scanner(System.in);
-        int productQuantity = scanner4.nextInt();
-        while (productQuantity <= 0) {
-            System.out.println("Product quantity can not be negative or zero ");
-            System.out.println("Enter product quantity");
-            productQuantity = scanner4.nextInt();
-        }
+        int productQuantity = getInteger("Quantity");
+
         Product product = new Product(productName, productPrice, productCategory, productQuantity);
         return product;
     }
@@ -257,6 +217,45 @@ public class ProductUtil {
                 return (int) (p1.getProductNumber() - p2.getProductNumber());
             }
         });
+    }
+
+    public static double getDouble(String info) {
+        System.out.println("[Hint - " + info + " should be entered by numbers]");
+        System.out.println("Enter " + info + ":");
+        while (true) {
+            String str = new Scanner(System.in).next();
+            if (str.matches("([0-9]+[.]?[0-9]*)")) {
+                return Double.parseDouble(str);
+            } else {
+                System.out.println("Please enter corresponding " + info);
+            }
+        }
+    }
+
+    public static int getInteger(String info) {
+        System.out.println("[Hint - " + info + " should be entered by numbers]");
+        System.out.println("Enter " + info + ":");
+        while (true) {
+            String str = new Scanner(System.in).next();
+            if (str.matches("([0-9]+)")) {
+                return Integer.parseInt(str);
+            } else {
+                System.out.println("Please enter corresponding " + info);
+            }
+        }
+    }
+
+    public static long getLong(String info) {
+        System.out.println("[Hint - " + info + " should be entered by numbers]");
+        System.out.println("Enter " + info + ":");
+        while (true) {
+            String str = new Scanner(System.in).next();
+            if (str.matches("([0-9]+)")) {
+                return Long.parseLong(str);
+            } else {
+                System.out.println("Please enter corresponding " + info);
+            }
+        }
     }
 
 
